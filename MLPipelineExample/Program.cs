@@ -11,10 +11,16 @@ namespace MLPipelineExample
     /// </summary>
     public class Program
     {
+        // path to default json data
+        private static readonly string _defaultDataPath = Path.Combine(Environment.CurrentDirectory, "Data", "mockexampledata.json");
+
         public static void Main(string[] args)
         {
             // read the json data into the view model
             var ImageResultInputViewModel = ConvertJsonToImageResultViewModel();
+
+            // pull out the ImageResultInputModels
+            var ImageResultInputModels = ImageResultInputViewModel.ImageResults;
         }
 
         /// <summary>
@@ -27,15 +33,11 @@ namespace MLPipelineExample
             // if provided file path is null, use default
             if (JsonFilePath == null)
             {
-                // get path to default json file
-                var workingDirectory = Environment.CurrentDirectory;
-                var projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
-                var DefaultJsonFilePath = Path.Combine(projectDirectory, @"Data\mockexampledata.json");
-
                 // convert json to ImageResultInputViewModel
-                return JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(DefaultJsonFilePath));
+                return JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(_defaultDataPath));
             }
 
+            // convert json to ImageResultViewModel
             return JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(JsonFilePath));
         }
     }
