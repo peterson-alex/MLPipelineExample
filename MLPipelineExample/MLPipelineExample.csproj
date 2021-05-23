@@ -9,4 +9,8 @@
     <PackageReference Include="Microsoft.ML" Version="1.5.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
