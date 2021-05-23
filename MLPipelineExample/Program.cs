@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using MLPipelineExample.Models;
 
@@ -17,10 +18,7 @@ namespace MLPipelineExample
         public static void Main(string[] args)
         {
             // read the json data into the view model
-            var ImageResultInputViewModel = ConvertJsonToImageResultViewModel();
-
-            // pull out the ImageResultInputModels
-            var ImageResultInputModels = ImageResultInputViewModel.ImageResults;
+            var ImageResults = ConvertJsonToImageResultViewModel();
         }
 
         /// <summary>
@@ -28,17 +26,23 @@ namespace MLPipelineExample
         /// </summary>
         /// <param name="JsonFilePath"></param>
         /// <returns></returns>
-        public static ImageResultInputViewModel ConvertJsonToImageResultViewModel(string JsonFilePath = null)
+        public static List<ImageResultInputModel> ConvertJsonToImageResultViewModel(string JsonFilePath = null)
         {
             // if provided file path is null, use default
             if (JsonFilePath == null)
             {
                 // convert json to ImageResultInputViewModel
-                return JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(_defaultDataPath));
+                var DefaultImageResultViewModel = JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(_defaultDataPath));
+
+                // pull out the Image Results and return
+                return DefaultImageResultViewModel.ImageResults;
             }
 
             // convert json to ImageResultViewModel
-            return JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(JsonFilePath));
+            var ImageResultInputViewModel = JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(JsonFilePath));
+
+            // pull out the image results and return
+            return ImageResultInputViewModel.ImageResults;
         }
     }
 }
