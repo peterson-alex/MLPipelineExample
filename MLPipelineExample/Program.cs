@@ -23,7 +23,7 @@ namespace MLPipelineExample
         public static void Main(string[] args)
         {
             // read the json data into the view model
-            var imageResults = ConvertJsonToImageResultViewModel();
+            var imageResults = ConvertJsonToImageResultInputModels();
 
             // create ml context
             var context = new MLContext();
@@ -66,7 +66,7 @@ namespace MLPipelineExample
         /// </summary>
         /// <param name="JsonFilePath"></param>
         /// <returns></returns>
-        public static List<ImageResultInputModel> ConvertJsonToImageResultViewModel(string JsonFilePath = null)
+        public static List<ImageResultInputModel> ConvertJsonToImageResultInputModels(string JsonFilePath = null)
         {
             // if provided file path is null, use default
             if (JsonFilePath == null)
