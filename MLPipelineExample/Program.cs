@@ -23,7 +23,7 @@ namespace MLPipelineExample
         public static void Main(string[] args)
         {
             // read the json data into the view model
-            var imageResults = ConvertJsonToImageResultInputModels();
+            var imageResults = ConvertJsonToImageResultInputModels(_defaultDataPath);
 
             // create ml context
             var context = new MLContext();
@@ -49,18 +49,8 @@ namespace MLPipelineExample
         /// </summary>
         /// <param name="JsonFilePath"></param>
         /// <returns></returns>
-        public static List<ImageResultInputModel> ConvertJsonToImageResultInputModels(string JsonFilePath = null)
+        public static List<ImageResultInputModel> ConvertJsonToImageResultInputModels(string JsonFilePath)
         {
-            // if provided file path is null, use default
-            if (JsonFilePath == null)
-            {
-                // convert json to ImageResultInputViewModel
-                var DefaultImageResultViewModel = JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(_defaultDataPath));
-
-                // pull out the Image Results and return
-                return DefaultImageResultViewModel.ImageResults;
-            }
-
             // convert json to ImageResultViewModel
             var ImageResultInputViewModel = JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(JsonFilePath));
 
