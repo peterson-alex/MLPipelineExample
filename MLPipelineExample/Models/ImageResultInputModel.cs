@@ -16,20 +16,17 @@ namespace MLPipelineExample.Models
         /// <summary>
         /// The ID of the user who took the reading.
         /// </summary>
-        [LoadColumn(0)]
         public string UserID { get; set; }
 
         /// <summary>
         /// The value of the Bilirubin reading.
         /// </summary>
-        [LoadColumn(1)]
         public float Value { get; set; }
 
         /// <summary>
         /// Indicates whether the reading was successful 
         /// or not (true if successful, false otherwise).
         /// </summary>
-        [LoadColumn(2)]
         public bool ReadingSuccess { get; set; }
     }
 }
