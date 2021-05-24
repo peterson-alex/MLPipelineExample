@@ -31,25 +31,8 @@ namespace MLPipelineExample
             // load data into context
             IDataView trainingData = context.Data.LoadFromEnumerable(imageResults);
 
-            // get estimators for categorical and feature variables
-            var userIdEstimator = GetOneHotEncodingEstimator(context, "UserID");
-            var features = new[] { "UserID", "Value" };
-            var featureEstimator = GetConcatenatedFeaturesEstimator(context, features);
-
-            // chain estimators together
-            var dataPipe = userIdEstimator.Append(featureEstimator);
-
-            // define options for logistic regression trainer
-            var options = new LbfgsLogisticRegressionBinaryTrainer.Options()
-            {
-                LabelColumnName = "ReadingSuccess",
-                FeatureColumnName = "Features",
-                MaximumNumberOfIterations = 100,
-                OptimizationTolerance = 1e-8f
-            };
-
             // train the model
-            var model = TrainModel(context, trainingData, dataPipe, options);
+            var model = TrainModel(context, trainingData);
 
             // get model performance metrics
             var metrics = GetModelMetrics(context, model, trainingData, "ReadingSuccess");
@@ -118,14 +101,31 @@ namespace MLPipelineExample
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static ITransformer TrainModel(MLContext context, IDataView trainingData, 
-            EstimatorChain<ColumnConcatenatingTransformer> dataPipe,
-            LbfgsLogisticRegressionBinaryTrainer.Options options)
+        public static ITransformer TrainModel(MLContext context, IDataView trainingData)
         {
+
+            // get estimators for categorical and feature variables
+            var userIdEstimator = GetOneHotEncodingEstimator(context, "UserID");
+            var features = new[] { "UserID", "Value" };
+            var featureEstimator = GetConcatenatedFeaturesEstimator(context, features);
+
+            // chain estimators together
+            var dataPipe = userIdEstimator.Append(featureEstimator);
+
+            // define options for logistic regression trainer
+            var options = new LbfgsLogisticRegressionBinaryTrainer.Options()
+            {
+                LabelColumnName = "ReadingSuccess",
+                FeatureColumnName = "Features",
+                MaximumNumberOfIterations = 100,
+                OptimizationTolerance = 1e-8f
+            };
+
             // define training pipe
             var trainer = context.BinaryClassification.Trainers.LbfgsLogisticRegression(options);
             var trainPipe = dataPipe.Append(trainer);
 
+            // fit the model and return
             return trainPipe.Fit(trainingData);
         }
 
