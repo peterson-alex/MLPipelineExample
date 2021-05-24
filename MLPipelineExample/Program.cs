@@ -69,33 +69,6 @@ namespace MLPipelineExample
         }
 
         /// <summary>
-        /// Prepares a categorical variable defined by 'key' to be 
-        /// transformed via One Hot Encoding.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static OneHotEncodingEstimator GetOneHotEncodingEstimator(MLContext context, string key)
-        {
-            return context.Transforms.Categorical.OneHotEncoding(new[]
-            {
-                new InputOutputColumnPair(key)
-            });
-        }
-
-        /// <summary>
-        /// Prepares feature variables as a concatenated 
-        /// column estimator.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="features"></param>
-        /// <returns></returns>
-        public static ColumnConcatenatingEstimator GetConcatenatedFeaturesEstimator(MLContext context, string[] features)
-        {
-            // concatenate features into one output column
-            return context.Transforms.Concatenate("Features", features);
-        }
-
-        /// <summary>
         /// Trains the logistic regression model on the provided training 
         /// data. 
         /// </summary>
@@ -127,6 +100,33 @@ namespace MLPipelineExample
 
             // fit the model and return
             return trainPipe.Fit(trainingData);
+        }
+
+        /// <summary>
+        /// Prepares a categorical variable defined by 'key' to be 
+        /// transformed via One Hot Encoding.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static OneHotEncodingEstimator GetOneHotEncodingEstimator(MLContext context, string key)
+        {
+            return context.Transforms.Categorical.OneHotEncoding(new[]
+            {
+                new InputOutputColumnPair(key)
+            });
+        }
+
+        /// <summary>
+        /// Prepares feature variables as a concatenated 
+        /// column estimator.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="features"></param>
+        /// <returns></returns>
+        public static ColumnConcatenatingEstimator GetConcatenatedFeaturesEstimator(MLContext context, string[] features)
+        {
+            // concatenate features into one output column
+            return context.Transforms.Concatenate("Features", features);
         }
 
         /// <summary>
