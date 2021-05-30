@@ -112,7 +112,7 @@ namespace MLPipelineExample.Builders
         {
             // set feature and label columns on options
             _trainingOptions.LabelColumnName = _label;
-            _trainingOptions.FeatureColumnName = "Features";
+            _trainingOptions.FeatureColumnName = _featureVariablesName;
 
             // define the trainer
             var trainer = _context.BinaryClassification.Trainers.LbfgsLogisticRegression(_trainingOptions);
