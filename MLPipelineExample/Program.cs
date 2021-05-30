@@ -26,11 +26,17 @@ namespace MLPipelineExample
             // read the json data into the view model
             var imageResults = ConvertJsonToImageResultInputModels(_defaultDataPath);
 
+            // create new logistic regression model builder
             var builder = new LogisticRegressionModelBuilder();
+
+            // load training data and set variables
+            // note that these steps can be performed in any order
             builder.LoadTrainingData(imageResults);
             builder.SetCategoricalVariables(new string[] { "UserID" });
             builder.SetFeatureVariables(new string[] { "UserID", "Value" });
             builder.SetLabel("ReadingSuccess");
+
+            // train the model and get performance metrics
             builder.TrainModel();
             var metrics = builder.EvaluateModel();
 
