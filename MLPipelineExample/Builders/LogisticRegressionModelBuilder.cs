@@ -31,7 +31,6 @@ namespace MLPipelineExample.Builders
             OptimizationTolerance = 1e-8f
         }; // default options to train model on
         ITransformer _trainedModel; // the model after it has been transformed
-        private BinaryClassificationMetrics _metrics; // evaluation metrics for the model
         
         /// <summary>
         /// Default constructor. 
@@ -153,8 +152,7 @@ namespace MLPipelineExample.Builders
         public BinaryClassificationMetrics EvaluateModel()
         {
             IDataView predictions = _trainedModel.Transform(_trainingData);
-            _metrics = _context.BinaryClassification.EvaluateNonCalibrated(predictions, _label);
-            return _metrics;
+            return _context.BinaryClassification.EvaluateNonCalibrated(predictions, _label);
         }
 
         /// <summary>
