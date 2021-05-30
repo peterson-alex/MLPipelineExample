@@ -19,6 +19,7 @@ namespace MLPipelineExample.Builders
         private MLContext _context; // ML context used to train and build model
         private IDataView _trainingData; // training data used to train model
         private OneHotEncodingEstimator _categoricalVariables; // variables that will be interpreted as categorical variables by the trainer
+        private ColumnConcatenatingEstimator _featureVariables; // feature variables of the model
         
         /// <summary>
         /// Default constructor. 
@@ -65,6 +66,18 @@ namespace MLPipelineExample.Builders
             _categoricalVariables = _context.Transforms.Categorical.OneHotEncoding(categoricalVariableList.ToArray());
 
             return _categoricalVariables; 
+        }
+
+        /// <summary>
+        /// Set the feature variables of the model. The label variable 
+        /// (the variable to be predicted) cannot be included here or the 
+        /// training will fail.
+        /// </summary>
+        /// <param name="featureVariables"></param>
+        /// <returns></returns>
+        public ColumnConcatenatingEstimator SetFeatureVariables(string[] featureVariables)
+        {
+            return _context.Transforms.Concatenate("Features", featureVariables);
         }
     }
 }
