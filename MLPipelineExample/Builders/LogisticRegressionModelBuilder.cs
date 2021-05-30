@@ -153,5 +153,22 @@ namespace MLPipelineExample.Builders
             IDataView predictions = _model.Transform(_trainingData);
             return _context.BinaryClassification.EvaluateNonCalibrated(predictions, _label, "Score");
         }
+
+        /// <summary>
+        /// Saves the trained model as a zip file. If no file path is 
+        /// specified, saves in working directory as 'model.zip'.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void SaveModel(string filePath = null)
+        {
+            if (filePath != null)
+            {
+                _context.Model.Save(_model, _trainingData.Schema, filePath);
+            }
+            else
+            {
+                _context.Model.Save(_model, _trainingData.Schema, "model.zip");
+            }
+        }
     }
 }
