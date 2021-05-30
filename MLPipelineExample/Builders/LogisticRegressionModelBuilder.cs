@@ -8,6 +8,7 @@ using Microsoft.ML.Transforms;
 using Microsoft.ML.Trainers;
 using MLPipelineExample.Models;
 using Microsoft.ML.Data;
+using System.Collections;
 
 namespace MLPipelineExample.Builders
 {
@@ -49,13 +50,13 @@ namespace MLPipelineExample.Builders
         }
 
         /// <summary>
-        /// Loads the training data into the 
+        /// Loads the training data into the machine learning context.
         /// </summary>
         /// <param name="imageResults"></param>
         /// <returns></returns>
-        public IDataView LoadTrainingData(IEnumerable<ImageResultInputModel> imageResults)
+        public IDataView LoadTrainingData<T>(IEnumerable<T> trainingData) where T : class
         {
-            _trainingData = _context.Data.LoadFromEnumerable(imageResults);
+            _trainingData = _context.Data.LoadFromEnumerable(trainingData);
             return _trainingData; 
         }
 
