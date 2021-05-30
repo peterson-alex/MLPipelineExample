@@ -173,5 +173,27 @@ namespace MLPipelineExample.Builders
                 _context.Model.Save(_trainedModel, _trainingData.Schema, "model.zip");
             }
         }
+
+        /// <summary>
+        /// Returns a human readable string of the evaluation 
+        /// metrics for the model.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetPrintableMetrics(BinaryClassificationMetrics metrics)
+        {
+            if (metrics != null)
+            {
+                // build the string of model metrics
+                StringBuilder builder = new StringBuilder();
+                builder.Append("Model accuracy = " + metrics.Accuracy.ToString("F4") + "\n");
+                builder.Append("F1 Score = " + metrics.F1Score.ToString("F4") + "\n");
+                builder.Append(metrics.ConfusionMatrix.GetFormattedConfusionTable());
+
+                // return the printable metrics
+                return builder.ToString();
+            }
+
+            return null;
+        }
     }
 }
