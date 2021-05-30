@@ -39,6 +39,9 @@ namespace MLPipelineExample
             Console.WriteLine(metrics.Accuracy.ToString("F4"));
             Console.Write("F1 Score on training data = ");
             Console.WriteLine(metrics.F1Score.ToString("F4"));
+
+            // save the model
+            builder.SaveModel(); 
         }
 
         /// <summary>
