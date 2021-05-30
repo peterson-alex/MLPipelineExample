@@ -139,5 +139,15 @@ namespace MLPipelineExample.Builders
             _model = trainingPipe.Fit(_trainingData);
             return _model;
         }
+
+        /// <summary>
+        /// Evaluates the model on the training data provided.
+        /// </summary>
+        /// <returns></returns>
+        public BinaryClassificationMetrics EvalauteModel()
+        {
+            IDataView predictions = _model.Transform(_trainingData);
+            return _context.BinaryClassification.EvaluateNonCalibrated(predictions, _label, "Score");
+        }
     }
 }
