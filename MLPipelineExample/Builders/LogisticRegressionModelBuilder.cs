@@ -152,7 +152,7 @@ namespace MLPipelineExample.Builders
         public BinaryClassificationMetrics EvaluateModel()
         {
             IDataView predictions = _model.Transform(_trainingData);
-            return _context.BinaryClassification.EvaluateNonCalibrated(predictions, _label, "Score");
+            return _context.BinaryClassification.EvaluateNonCalibrated(predictions, _label);
         }
 
         /// <summary>
