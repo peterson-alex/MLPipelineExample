@@ -184,7 +184,7 @@ namespace MLPipelineExample.Builders
                 // build the string of model metrics
                 StringBuilder builder = new StringBuilder();
                 builder.Append("Model accuracy = " + metrics.Accuracy.ToString("F4") + "\n");
-                builder.Append("F1 Score = " + metrics.F1Score.ToString("F4") + "\n");
+                builder.Append("F1 Score = " + metrics.F1Score.ToString("F4") + "\n\n");
                 builder.Append(metrics.ConfusionMatrix.GetFormattedConfusionTable());
 
                 // return the printable metrics
