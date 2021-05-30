@@ -41,7 +41,7 @@ namespace MLPipelineExample
             var metrics = builder.EvaluateModel();
 
             // print metrics
-            PrintEvaluationMetrics(metrics);
+            Console.Write(LogisticRegressionModelBuilder.GetPrintableMetrics(metrics));
 
             // save the model
             builder.SaveModel(); 
@@ -56,29 +56,6 @@ namespace MLPipelineExample
         {
             // convert json to ImageResultViewModel
             return JsonConvert.DeserializeObject<List<ImageResultInputModel>>(File.ReadAllText(JsonFilePath));
-        }
-
-        /// <summary>
-        /// Prints the evaulation metrics from a trained model.
-        /// </summary>
-        /// <param name="metrics"></param>
-        public static void PrintEvaluationMetrics(BinaryClassificationMetrics metrics)
-        {
-            if (metrics != null)
-            {
-                Console.Write("Model accuracy on training data = ");
-                Console.WriteLine(metrics.Accuracy.ToString("F4"));
-                Console.Write("F1 Score on training data = ");
-                Console.WriteLine(metrics.F1Score.ToString("F4"));
-                Console.Write("AUC = ");
-                Console.WriteLine(metrics.AreaUnderRocCurve.ToString("F4") + "\n");
-                
-                var confusionMatrix = metrics.ConfusionMatrix.GetFormattedConfusionTable();
-                Console.WriteLine(confusionMatrix);
-                return;
-            }
-
-            Console.WriteLine("No metrics provided.");
         }
     }
 }
