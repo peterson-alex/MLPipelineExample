@@ -55,7 +55,10 @@ namespace MLPipelineExample
             return ImageResultInputViewModel.ImageResults;
         }
 
-
+        /// <summary>
+        /// Prints the evaulation metrics from a trained model.
+        /// </summary>
+        /// <param name="metrics"></param>
         public static void PrintEvaluationMetrics(BinaryClassificationMetrics metrics)
         {
             if (metrics != null)
@@ -69,7 +72,10 @@ namespace MLPipelineExample
                 
                 var confusionMatrix = metrics.ConfusionMatrix.GetFormattedConfusionTable();
                 Console.WriteLine(confusionMatrix);
+                return;
             }
+
+            Console.WriteLine("No metrics provided.");
         }
     }
 }
