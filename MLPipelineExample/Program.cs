@@ -55,10 +55,7 @@ namespace MLPipelineExample
         public static List<ImageResultInputModel> ConvertJsonToImageResultInputModels(string JsonFilePath)
         {
             // convert json to ImageResultViewModel
-            var imageResultInputViewModel = JsonConvert.DeserializeObject<ImageResultInputViewModel>(File.ReadAllText(JsonFilePath));
-
-            // pull out the image results and return
-            return imageResultInputViewModel.ImageResults;
+            return JsonConvert.DeserializeObject<List<ImageResultInputModel>>(File.ReadAllText(JsonFilePath));
         }
 
         /// <summary>
