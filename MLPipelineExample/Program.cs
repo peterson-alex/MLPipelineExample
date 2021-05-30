@@ -32,7 +32,7 @@ namespace MLPipelineExample
             builder.SetFeatureVariables(new string[] { "UserID", "Value" });
             builder.SetLabel("ReadingSuccess");
             builder.TrainModel();
-            var metrics = builder.EvalauteModel();
+            var metrics = builder.EvaluateModel();
 
             // evaluate the model
             Console.Write("Model accuracy on training data = ");
