@@ -112,7 +112,7 @@ namespace MLPipelineExample.Builders
         {
             // set feature and label columns on options
             _trainingOptions.LabelColumnName = _label;
-            _trainingOptions.FeatureColumnName = _featureVariablesName;
+            _trainingOptions.FeatureColumnName = "Features";
 
             // define the trainer
             var trainer = _context.BinaryClassification.Trainers.LbfgsLogisticRegression(_trainingOptions);
@@ -120,16 +120,20 @@ namespace MLPipelineExample.Builders
             // instantiate data pipe
             var dataPipe = new EstimatorChain<ColumnConcatenatingTransformer>();
 
-            // append categorical variables to data pipe
-            if (_categoricalVariables != null)
+            // no feature variables defined so can't train model
+            if (_featureVariables == null)
             {
-                dataPipe.Append(_categoricalVariables);
+                return null; 
             }
-            
-            // append feature variables to data pipe
-            if (_featureVariables != null)
+
+            // no categorical variables set 
+            if (_categoricalVariables == null)
             {
-                dataPipe.Append(_featureVariables);
+                dataPipe = dataPipe.Append(_featureVariables);
+            }
+            else // categorical variables set 
+            {
+                dataPipe = dataPipe.Append(_categoricalVariables).Append(_featureVariables);
             }
 
             // define the training pipe
