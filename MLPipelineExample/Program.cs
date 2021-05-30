@@ -7,6 +7,7 @@ using Microsoft.ML.Trainers;
 using Microsoft.ML.Data;
 using Microsoft.ML.Transforms;
 using MLPipelineExample.Models;
+using MLPipelineExample.Builders;
 
 
 namespace MLPipelineExample
@@ -25,17 +26,13 @@ namespace MLPipelineExample
             // read the json data into the view model
             var imageResults = ConvertJsonToImageResultInputModels(_defaultDataPath);
 
-            // create ml context
-            var context = new MLContext();
-
-            // load data into context
-            IDataView trainingData = context.Data.LoadFromEnumerable(imageResults);
-
-            // train the model
-            var model = TrainModel(context, trainingData);
-
-            // get model performance metrics
-            var metrics = GetModelMetrics(context, model, trainingData, "ReadingSuccess");
+            var builder = new LogisticRegressionModelBuilder();
+            builder.LoadTrainingData(imageResults);
+            builder.SetCategoricalVariables(new string[] { "UserID" });
+            builder.SetFeatureVariables(new string[] { "UserID", "Value" });
+            builder.SetLabel("ReadingSuccess");
+            builder.TrainModel();
+            var metrics = builder.EvalauteModel();
 
             // evaluate the model
             Console.Write("Model accuracy on training data = ");
@@ -56,83 +53,6 @@ namespace MLPipelineExample
 
             // pull out the image results and return
             return ImageResultInputViewModel.ImageResults;
-        }
-
-        /// <summary>
-        /// Trains the logistic regression model on the provided training 
-        /// data. 
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public static ITransformer TrainModel(MLContext context, IDataView trainingData)
-        {
-
-            // get estimators for categorical and feature variables
-            var userIdEstimator = GetOneHotEncodingEstimator(context, "UserID");
-            var features = new[] { "UserID", "Value" };
-            var featureEstimator = GetConcatenatedFeaturesEstimator(context, features);
-
-            // chain estimators together
-            var dataPipe = userIdEstimator.Append(featureEstimator);
-
-            // define options for logistic regression trainer
-            var options = new LbfgsLogisticRegressionBinaryTrainer.Options()
-            {
-                LabelColumnName = "ReadingSuccess",
-                FeatureColumnName = "Features",
-                MaximumNumberOfIterations = 100,
-                OptimizationTolerance = 1e-8f
-            };
-
-            // define training pipe
-            var trainer = context.BinaryClassification.Trainers.LbfgsLogisticRegression(options);
-            var trainPipe = dataPipe.Append(trainer);
-
-            // fit the model and return
-            return trainPipe.Fit(trainingData);
-        }
-
-        /// <summary>
-        /// Prepares a categorical variable defined by 'key' to be 
-        /// transformed via One Hot Encoding.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static OneHotEncodingEstimator GetOneHotEncodingEstimator(MLContext context, string key)
-        {
-            return context.Transforms.Categorical.OneHotEncoding(new[]
-            {
-                new InputOutputColumnPair(key)
-            });
-        }
-
-        /// <summary>
-        /// Prepares feature variables as a concatenated 
-        /// column estimator.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="features"></param>
-        /// <returns></returns>
-        public static ColumnConcatenatingEstimator GetConcatenatedFeaturesEstimator(MLContext context, string[] features)
-        {
-            // concatenate features into one output column
-            return context.Transforms.Concatenate("Features", features);
-        }
-
-        /// <summary>
-        /// Returns the metrics for training data of 
-        /// the binary classification model.
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="model"></param>
-        /// <param name="trainingData"></param>
-        /// <param name="predictedLabel"></param>
-        /// <returns></returns>
-        public static BinaryClassificationMetrics GetModelMetrics(MLContext context, ITransformer model, IDataView trainingData, string predictedLabel)
-        {
-            // get model metrics
-            IDataView predictions = model.Transform(trainingData);
-            return context.BinaryClassification.EvaluateNonCalibrated(predictions, "ReadingSuccess", "Score");
         }
     }
 }
