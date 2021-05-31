@@ -44,13 +44,14 @@ namespace MLPipelineExample
         }
 
         /// <summary>
-        /// Produces an ImageResultIntputViewModel from the provided json data.
+        /// Produces a list of ImageResultBasicViewModels 
+        /// from the provided json data.
         /// </summary>
         /// <param name="JsonFilePath"></param>
         /// <returns></returns>
         public static List<ImageResultBasicViewModel> ConvertJsonToImageResultInputModels(string JsonFilePath)
         {
-            // convert json to ImageResultViewModel
+            // convert json to ImageResultBasicViewModel
             return JsonConvert.DeserializeObject<List<ImageResultBasicViewModel>>(File.ReadAllText(JsonFilePath));
         }
     }
