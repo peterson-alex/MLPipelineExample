@@ -43,15 +43,6 @@ namespace MLPipelineExample.Builders
         }
 
         /// <summary>
-        /// Constructor. 
-        /// </summary>
-        /// <param name="context"></param>
-        public LogisticRegressionModelBuilder(MLContext context)
-        {
-            _context = context;
-        }
-
-        /// <summary>
         /// Loads the training data into the machine learning context.
         /// </summary>
         /// <param name="imageResults"></param>
