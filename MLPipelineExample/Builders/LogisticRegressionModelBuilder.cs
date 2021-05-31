@@ -25,11 +25,13 @@ namespace MLPipelineExample.Builders
         private ColumnConcatenatingEstimator _featureVariables; // feature variables of the model
         private string _featureVariablesName = "Features"; // the column name of the feature variables
         private string _label; // the variable to be predicted on
+
+        /// default options to train model on
         private LbfgsLogisticRegressionBinaryTrainer.Options _trainingOptions = new LbfgsLogisticRegressionBinaryTrainer.Options()
         {
             MaximumNumberOfIterations = 100, 
             OptimizationTolerance = 1e-8f
-        }; // default options to train model on
+        }; 
         ITransformer _trainedModel; // the model after it has been transformed
         
         /// <summary>
