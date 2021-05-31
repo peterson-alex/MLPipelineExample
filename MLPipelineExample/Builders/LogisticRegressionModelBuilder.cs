@@ -34,8 +34,6 @@ namespace MLPipelineExample.Builders
         /// </summary>
         public ColumnConcatenatingEstimator FeatureVariableConcatenator { get; private set; }
 
-        private const string _featureVariablesName = "Features"; // the column name of the feature variables
-
         /// <summary>
         /// The dataset used for all training and testing 
         /// of the model.
@@ -50,6 +48,7 @@ namespace MLPipelineExample.Builders
         // Options that the model uses to train on
         public LbfgsLogisticRegressionBinaryTrainer.Options TrainingOptions { get; private set; } = new LbfgsLogisticRegressionBinaryTrainer.Options()
         {
+            FeatureColumnName = "Features",
             MaximumNumberOfIterations = 100, 
             OptimizationTolerance = 1e-8f
         };
@@ -106,7 +105,7 @@ namespace MLPipelineExample.Builders
         /// <returns></returns>
         public ColumnConcatenatingEstimator SetFeatureVariables(string[] featureVariables)
         {
-            FeatureVariableConcatenator = Context.Transforms.Concatenate("Features", featureVariables);
+            FeatureVariableConcatenator = Context.Transforms.Concatenate(TrainingOptions.FeatureColumnName, featureVariables);
             return FeatureVariableConcatenator;
         }
 
@@ -131,7 +130,6 @@ namespace MLPipelineExample.Builders
         {
             // set feature and label columns on options
             TrainingOptions.LabelColumnName = Label;
-            TrainingOptions.FeatureColumnName = _featureVariablesName;
 
             // define the trainer
             var trainer = Context.BinaryClassification.Trainers.LbfgsLogisticRegression(TrainingOptions);
