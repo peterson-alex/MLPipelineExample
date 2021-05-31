@@ -23,8 +23,12 @@ namespace MLPipelineExample.Builders
         /// ML context used for all model training, building, and evaluation.
         /// </summary>
         public MLContext Context { get; private set; }
+        
+        /// <summary>
+        /// Converts categorical variables using on-hot encoding.
+        /// </summary>
+        public OneHotEncodingEstimator CategoricalVariableConverter { get; private set; }
 
-        private OneHotEncodingEstimator _categoricalVariables; // variables that will be interpreted as categorical variables by the trainer
         private ColumnConcatenatingEstimator _featureVariables; // feature variables of the model
         private const string _featureVariablesName = "Features"; // the column name of the feature variables
 
@@ -84,9 +88,9 @@ namespace MLPipelineExample.Builders
                 categoricalVariableList.Add(new InputOutputColumnPair(key));
             }
 
-            _categoricalVariables = Context.Transforms.Categorical.OneHotEncoding(categoricalVariableList.ToArray());
+            CategoricalVariableConverter = Context.Transforms.Categorical.OneHotEncoding(categoricalVariableList.ToArray());
 
-            return _categoricalVariables; 
+            return CategoricalVariableConverter; 
         }
 
         /// <summary>
@@ -138,13 +142,13 @@ namespace MLPipelineExample.Builders
             }
 
             // no categorical variables set 
-            if (_categoricalVariables == null)
+            if (CategoricalVariableConverter == null)
             {
                 dataPipe = dataPipe.Append(_featureVariables);
             }
             else // categorical variables set 
             {
-                dataPipe = dataPipe.Append(_categoricalVariables).Append(_featureVariables);
+                dataPipe = dataPipe.Append(CategoricalVariableConverter).Append(_featureVariables);
             }
 
             // define the training pipe
