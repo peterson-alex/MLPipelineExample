@@ -2,10 +2,6 @@
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Microsoft.ML;
-using Microsoft.ML.Trainers;
-using Microsoft.ML.Data;
-using Microsoft.ML.Transforms;
 using MLPipelineExample.Models;
 using MLPipelineExample.Builders;
 
