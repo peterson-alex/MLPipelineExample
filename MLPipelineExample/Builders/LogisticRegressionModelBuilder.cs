@@ -35,18 +35,17 @@ namespace MLPipelineExample.Builders
         /// </summary>
         public string Label { get; private set; }
 
-        /// default options to train model on
-        private LbfgsLogisticRegressionBinaryTrainer.Options _trainingOptions = new LbfgsLogisticRegressionBinaryTrainer.Options()
+        // Options that the model uses to train on
+        public LbfgsLogisticRegressionBinaryTrainer.Options TrainingOptions { get; private set; } = new LbfgsLogisticRegressionBinaryTrainer.Options()
         {
             MaximumNumberOfIterations = 100, 
             OptimizationTolerance = 1e-8f
-        }; 
-        // ITransformer _trainedModel; // the model after it has been transformed
+        };
 
-        /// <summary>
-        /// The trained model.
-        /// </summary>
-        public ITransformer TrainedModel { get; private set; }
+    /// <summary>
+    /// The trained model.
+    /// </summary>
+    public ITransformer TrainedModel { get; private set; }
         
         /// <summary>
         /// Default constructor. 
@@ -119,11 +118,11 @@ namespace MLPipelineExample.Builders
         public ITransformer TrainModel()
         {
             // set feature and label columns on options
-            _trainingOptions.LabelColumnName = Label;
-            _trainingOptions.FeatureColumnName = _featureVariablesName;
+            TrainingOptions.LabelColumnName = Label;
+            TrainingOptions.FeatureColumnName = _featureVariablesName;
 
             // define the trainer
-            var trainer = _context.BinaryClassification.Trainers.LbfgsLogisticRegression(_trainingOptions);
+            var trainer = _context.BinaryClassification.Trainers.LbfgsLogisticRegression(TrainingOptions);
 
             // instantiate data pipe
             var dataPipe = new EstimatorChain<ColumnConcatenatingTransformer>();
