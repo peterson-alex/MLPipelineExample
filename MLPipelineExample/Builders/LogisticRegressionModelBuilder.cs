@@ -19,7 +19,11 @@ namespace MLPipelineExample.Builders
     public class LogisticRegressionModelBuilder
     {
 
-        private MLContext _context; // ML context used to train and build model
+        /// <summary>
+        /// ML context used for all model training, building, and evaluation.
+        /// </summary>
+        public MLContext Context { get; private set; }
+
         private OneHotEncodingEstimator _categoricalVariables; // variables that will be interpreted as categorical variables by the trainer
         private ColumnConcatenatingEstimator _featureVariables; // feature variables of the model
         private const string _featureVariablesName = "Features"; // the column name of the feature variables
@@ -52,7 +56,7 @@ namespace MLPipelineExample.Builders
         /// </summary>
         public LogisticRegressionModelBuilder()
         {
-            _context = new MLContext();
+            Context = new MLContext();
         }
 
         /// <summary>
@@ -62,7 +66,7 @@ namespace MLPipelineExample.Builders
         /// <returns></returns>
         public IDataView LoadTrainingData<T>(IEnumerable<T> dataSet) where T : class
         {
-            DataSet = _context.Data.LoadFromEnumerable(dataSet);
+            DataSet = Context.Data.LoadFromEnumerable(dataSet);
             return DataSet; 
         }
 
@@ -80,7 +84,7 @@ namespace MLPipelineExample.Builders
                 categoricalVariableList.Add(new InputOutputColumnPair(key));
             }
 
-            _categoricalVariables = _context.Transforms.Categorical.OneHotEncoding(categoricalVariableList.ToArray());
+            _categoricalVariables = Context.Transforms.Categorical.OneHotEncoding(categoricalVariableList.ToArray());
 
             return _categoricalVariables; 
         }
@@ -94,7 +98,7 @@ namespace MLPipelineExample.Builders
         /// <returns></returns>
         public ColumnConcatenatingEstimator SetFeatureVariables(string[] featureVariables)
         {
-            _featureVariables = _context.Transforms.Concatenate("Features", featureVariables);
+            _featureVariables = Context.Transforms.Concatenate("Features", featureVariables);
             return _featureVariables;
         }
 
@@ -122,7 +126,7 @@ namespace MLPipelineExample.Builders
             TrainingOptions.FeatureColumnName = _featureVariablesName;
 
             // define the trainer
-            var trainer = _context.BinaryClassification.Trainers.LbfgsLogisticRegression(TrainingOptions);
+            var trainer = Context.BinaryClassification.Trainers.LbfgsLogisticRegression(TrainingOptions);
 
             // instantiate data pipe
             var dataPipe = new EstimatorChain<ColumnConcatenatingTransformer>();
@@ -158,7 +162,7 @@ namespace MLPipelineExample.Builders
         public BinaryClassificationMetrics EvaluateModel()
         {
             IDataView predictions = TrainedModel.Transform(DataSet);
-            return _context.BinaryClassification.EvaluateNonCalibrated(predictions, Label);
+            return Context.BinaryClassification.EvaluateNonCalibrated(predictions, Label);
         }
 
         /// <summary>
@@ -170,11 +174,11 @@ namespace MLPipelineExample.Builders
         {
             if (filePath != null)
             {
-                _context.Model.Save(TrainedModel, DataSet.Schema, filePath);
+                Context.Model.Save(TrainedModel, DataSet.Schema, filePath);
             }
             else
             {
-                _context.Model.Save(TrainedModel, DataSet.Schema, "model.zip");
+                Context.Model.Save(TrainedModel, DataSet.Schema, "model.zip");
             }
         }
 
