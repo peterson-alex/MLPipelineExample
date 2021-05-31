@@ -61,25 +61,10 @@ namespace MLPipelineExample.Models
         /// actual negatives.
         /// </summary>
         public double NegativeRecall { get; set; }
-        
-        /// <summary>
-        /// The number of true positives in the test data.
-        /// </summary>
-        public int TruePositiveCount { get; set; }
 
         /// <summary>
-        /// The number of false positives in the test data.
+        /// The full confusion matrix of the model test.
         /// </summary>
-        public int FalsePositiveCount { get; set; }
-
-        /// <summary>
-        /// The number of true negatives in the test data.
-        /// </summary>
-        public int TrueNegativeCount { get; set; }
-        
-        /// <summary>
-        /// The number of false negatives in the test data.
-        /// </summary>
-        public int FalseNegativeCount { get; set; }
+        public ConfusionMatrixModel ConfusionMatrix { get; set; }
     }
 }
