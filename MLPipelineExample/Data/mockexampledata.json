@@ -1,52 +1,55 @@
-[
-  {
-    "UserID": "75d5bf7f-2da4-4e26-bee2-6aab7b1acc04",
-    "Value": 7.4,
-    "ReadingSuccess": true
-  },
-  {
-    "UserID": "75d5bf7f-2da4-4e26-bee2-6aab7b1acc04",
-    "Value": 3.8,
-    "ReadingSuccess": true
-  },
-  {
-    "UserID": "75d5bf7f-2da4-4e26-bee2-6aab7b1acc04",
-    "Value": 10.0,
-    "ReadingSuccess": true
-  },
-  {
-    "UserID": "75d5bf7f-2da4-4e26-bee2-6aab7b1acc04",
-    "Value": 17.2,
-    "ReadingSuccess": true
-  },
-  {
-    "UserID": "e6a2146e-f03a-4676-a6c6-048213b8351d",
-    "Value": 24.9,
-    "ReadingSuccess": true
-  },
-  {
-    "UserID": "e6a2146e-f03a-4676-a6c6-048213b8351d",
-    "Value": 25.0,
-    "ReadingSuccess": false
-  },
-  {
-    "UserID": "e6a2146e-f03a-4676-a6c6-048213b8351d",
-    "Value": 27.3,
-    "ReadingSuccess": false
-  },
-  {
-    "UserID": "1a0ee34f-a82f-4c94-a3b2-016b3a1ff5a7",
-    "Value": 29.6,
-    "ReadingSuccess": false
-  },
-  {
-    "UserID": "1a0ee34f-a82f-4c94-a3b2-016b3a1ff5a7",
-    "Value": 31.1,
-    "ReadingSuccess": false
-  },
-  {
-    "UserID": "1a0ee34f-a82f-4c94-a3b2-016b3a1ff5a7",
-    "Value": 33.4,
-    "ReadingSuccess": false
-  }
-]
+{
+  "ImageResultBasicViewModels": [
+    {
+      "UserID": "75d5bf7f-2da4-4e26-bee2-6aab7b1acc04",
+      "Value": 7.4,
+      "ReadingSuccess": true
+    },
+    {
+      "UserID": "75d5bf7f-2da4-4e26-bee2-6aab7b1acc04",
+      "Value": 3.8,
+      "ReadingSuccess": true
+    },
+    {
+      "UserID": "75d5bf7f-2da4-4e26-bee2-6aab7b1acc04",
+      "Value": 10.0,
+      "ReadingSuccess": true
+    },
+    {
+      "UserID": "75d5bf7f-2da4-4e26-bee2-6aab7b1acc04",
+      "Value": 17.2,
+      "ReadingSuccess": true
+    },
+    {
+      "UserID": "e6a2146e-f03a-4676-a6c6-048213b8351d",
+      "Value": 24.9,
+      "ReadingSuccess": true
+    },
+    {
+      "UserID": "e6a2146e-f03a-4676-a6c6-048213b8351d",
+      "Value": 25.0,
+      "ReadingSuccess": false
+    },
+    {
+      "UserID": "e6a2146e-f03a-4676-a6c6-048213b8351d",
+      "Value": 27.3,
+      "ReadingSuccess": false
+    },
+    {
+      "UserID": "1a0ee34f-a82f-4c94-a3b2-016b3a1ff5a7",
+      "Value": 29.6,
+      "ReadingSuccess": false
+    },
+    {
+      "UserID": "1a0ee34f-a82f-4c94-a3b2-016b3a1ff5a7",
+      "Value": 31.1,
+      "ReadingSuccess": false
+    },
+    {
+      "UserID": "1a0ee34f-a82f-4c94-a3b2-016b3a1ff5a7",
+      "Value": 33.4,
+      "ReadingSuccess": false
+    }
+  ]
+}
+
