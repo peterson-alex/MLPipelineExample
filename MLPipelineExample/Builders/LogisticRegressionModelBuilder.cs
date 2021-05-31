@@ -29,7 +29,11 @@ namespace MLPipelineExample.Builders
         /// </summary>
         public OneHotEncodingEstimator CategoricalVariableConverter { get; private set; }
 
-        private ColumnConcatenatingEstimator _featureVariables; // feature variables of the model
+        /// <summary>
+        /// Condenses all feature variables into one column.
+        /// </summary>
+        public ColumnConcatenatingEstimator FeatureVariableConcatenator { get; private set; }
+
         private const string _featureVariablesName = "Features"; // the column name of the feature variables
 
         /// <summary>
@@ -102,8 +106,8 @@ namespace MLPipelineExample.Builders
         /// <returns></returns>
         public ColumnConcatenatingEstimator SetFeatureVariables(string[] featureVariables)
         {
-            _featureVariables = Context.Transforms.Concatenate("Features", featureVariables);
-            return _featureVariables;
+            FeatureVariableConcatenator = Context.Transforms.Concatenate("Features", featureVariables);
+            return FeatureVariableConcatenator;
         }
 
         /// <summary>
@@ -136,7 +140,7 @@ namespace MLPipelineExample.Builders
             var dataPipe = new EstimatorChain<ColumnConcatenatingTransformer>();
 
             // no feature variables defined so can't train model
-            if (_featureVariables == null)
+            if (FeatureVariableConcatenator == null)
             {
                 return null; 
             }
@@ -144,11 +148,11 @@ namespace MLPipelineExample.Builders
             // no categorical variables set 
             if (CategoricalVariableConverter == null)
             {
-                dataPipe = dataPipe.Append(_featureVariables);
+                dataPipe = dataPipe.Append(FeatureVariableConcatenator);
             }
             else // categorical variables set 
             {
-                dataPipe = dataPipe.Append(CategoricalVariableConverter).Append(_featureVariables);
+                dataPipe = dataPipe.Append(CategoricalVariableConverter).Append(FeatureVariableConcatenator);
             }
 
             // define the training pipe
