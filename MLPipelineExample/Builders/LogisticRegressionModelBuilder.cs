@@ -24,7 +24,11 @@ namespace MLPipelineExample.Builders
         private OneHotEncodingEstimator _categoricalVariables; // variables that will be interpreted as categorical variables by the trainer
         private ColumnConcatenatingEstimator _featureVariables; // feature variables of the model
         private string _featureVariablesName = "Features"; // the column name of the feature variables
-        private string _label; // the variable to be predicted on
+
+        /// <summary>
+        /// The variable to be predicted on.
+        /// </summary>
+        public string Label { get; private set; }
 
         /// default options to train model on
         private LbfgsLogisticRegressionBinaryTrainer.Options _trainingOptions = new LbfgsLogisticRegressionBinaryTrainer.Options()
@@ -93,8 +97,8 @@ namespace MLPipelineExample.Builders
         /// <returns></returns>
         public string SetLabel(string label)
         {
-            _label = label;
-            return _label;
+            Label = label;
+            return Label;
         }
 
         /// <summary>
@@ -105,7 +109,7 @@ namespace MLPipelineExample.Builders
         public ITransformer TrainModel()
         {
             // set feature and label columns on options
-            _trainingOptions.LabelColumnName = _label;
+            _trainingOptions.LabelColumnName = Label;
             _trainingOptions.FeatureColumnName = _featureVariablesName;
 
             // define the trainer
@@ -145,7 +149,7 @@ namespace MLPipelineExample.Builders
         public BinaryClassificationMetrics EvaluateModel()
         {
             IDataView predictions = _trainedModel.Transform(_trainingData);
-            return _context.BinaryClassification.EvaluateNonCalibrated(predictions, _label);
+            return _context.BinaryClassification.EvaluateNonCalibrated(predictions, Label);
         }
 
         /// <summary>
