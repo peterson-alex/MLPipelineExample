@@ -20,14 +20,14 @@ namespace MLPipelineExample
         public static void Main(string[] args)
         {
             // read the json data into the view model
-            var imageResults = ConvertJsonToImageResultInputModels(_defaultDataPath);
+            var imageResultsBasic = ConvertJsonToImageResultInputModels(_defaultDataPath).ImageResultBasicViewModels;
 
             // create new logistic regression model builder
             var builder = new LogisticRegressionModelBuilder();
 
             // load training data and set variables
             // note that these steps can be performed in any order
-            builder.LoadTrainingData(imageResults);
+            builder.LoadTrainingData(imageResultsBasic);
             builder.SetCategoricalVariables(new string[] { "UserID" });
             builder.SetFeatureVariables(new string[] { "UserID", "Value" });
             builder.SetLabel("ReadingSuccess");
@@ -49,10 +49,10 @@ namespace MLPipelineExample
         /// </summary>
         /// <param name="JsonFilePath"></param>
         /// <returns></returns>
-        public static List<ImageResultBasicViewModel> ConvertJsonToImageResultInputModels(string JsonFilePath)
+        public static ImageResultBasicDataViewModel ConvertJsonToImageResultInputModels(string JsonFilePath)
         {
             // convert json to ImageResultBasicViewModel
-            return JsonConvert.DeserializeObject<List<ImageResultBasicViewModel>>(File.ReadAllText(JsonFilePath));
+            return JsonConvert.DeserializeObject<ImageResultBasicDataViewModel>(File.ReadAllText(JsonFilePath));
         }
     }
 }
