@@ -20,10 +20,16 @@ namespace MLPipelineExample.Builders
     {
 
         private MLContext _context; // ML context used to train and build model
-        private IDataView _trainingData; // training data used to train model
+        // private IDataView _trainingData; // training data used to train model
         private OneHotEncodingEstimator _categoricalVariables; // variables that will be interpreted as categorical variables by the trainer
         private ColumnConcatenatingEstimator _featureVariables; // feature variables of the model
         private const string _featureVariablesName = "Features"; // the column name of the feature variables
+
+        /// <summary>
+        /// The dataset used for all training and testing 
+        /// of the model.
+        /// </summary>
+        public IDataView DataSet { get; private set; }
 
         /// <summary>
         /// The variable to be predicted on.
@@ -51,10 +57,10 @@ namespace MLPipelineExample.Builders
         /// </summary>
         /// <param name="imageResults"></param>
         /// <returns></returns>
-        public IDataView LoadTrainingData<T>(IEnumerable<T> trainingData) where T : class
+        public IDataView LoadTrainingData<T>(IEnumerable<T> dataSet) where T : class
         {
-            _trainingData = _context.Data.LoadFromEnumerable(trainingData);
-            return _trainingData; 
+            DataSet = _context.Data.LoadFromEnumerable(dataSet);
+            return DataSet; 
         }
 
         /// <summary>
@@ -138,7 +144,7 @@ namespace MLPipelineExample.Builders
             var trainingPipe = dataPipe.Append(trainer);
 
             // fit the model and return
-            _trainedModel = trainingPipe.Fit(_trainingData);
+            _trainedModel = trainingPipe.Fit(DataSet);
             return _trainedModel;
         }
 
@@ -148,7 +154,7 @@ namespace MLPipelineExample.Builders
         /// <returns></returns>
         public BinaryClassificationMetrics EvaluateModel()
         {
-            IDataView predictions = _trainedModel.Transform(_trainingData);
+            IDataView predictions = _trainedModel.Transform(DataSet);
             return _context.BinaryClassification.EvaluateNonCalibrated(predictions, Label);
         }
 
@@ -161,11 +167,11 @@ namespace MLPipelineExample.Builders
         {
             if (filePath != null)
             {
-                _context.Model.Save(_trainedModel, _trainingData.Schema, filePath);
+                _context.Model.Save(_trainedModel, DataSet.Schema, filePath);
             }
             else
             {
-                _context.Model.Save(_trainedModel, _trainingData.Schema, "model.zip");
+                _context.Model.Save(_trainedModel, DataSet.Schema, "model.zip");
             }
         }
 
