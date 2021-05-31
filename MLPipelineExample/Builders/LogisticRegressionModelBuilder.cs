@@ -41,7 +41,12 @@ namespace MLPipelineExample.Builders
             MaximumNumberOfIterations = 100, 
             OptimizationTolerance = 1e-8f
         }; 
-        ITransformer _trainedModel; // the model after it has been transformed
+        // ITransformer _trainedModel; // the model after it has been transformed
+
+        /// <summary>
+        /// The trained model.
+        /// </summary>
+        public ITransformer TrainedModel { get; private set; }
         
         /// <summary>
         /// Default constructor. 
@@ -143,8 +148,8 @@ namespace MLPipelineExample.Builders
             var trainingPipe = dataPipe.Append(trainer);
 
             // fit the model and return
-            _trainedModel = trainingPipe.Fit(DataSet);
-            return _trainedModel;
+            TrainedModel = trainingPipe.Fit(DataSet);
+            return TrainedModel;
         }
 
         /// <summary>
@@ -153,7 +158,7 @@ namespace MLPipelineExample.Builders
         /// <returns></returns>
         public BinaryClassificationMetrics EvaluateModel()
         {
-            IDataView predictions = _trainedModel.Transform(DataSet);
+            IDataView predictions = TrainedModel.Transform(DataSet);
             return _context.BinaryClassification.EvaluateNonCalibrated(predictions, Label);
         }
 
@@ -166,11 +171,11 @@ namespace MLPipelineExample.Builders
         {
             if (filePath != null)
             {
-                _context.Model.Save(_trainedModel, DataSet.Schema, filePath);
+                _context.Model.Save(TrainedModel, DataSet.Schema, filePath);
             }
             else
             {
-                _context.Model.Save(_trainedModel, DataSet.Schema, "model.zip");
+                _context.Model.Save(TrainedModel, DataSet.Schema, "model.zip");
             }
         }
 
