@@ -8,10 +8,11 @@ using Microsoft.ML.Data;
 namespace MLPipelineExample.Models
 {
     /// <summary>
-    /// An ImageResultInputModel represents an instance
-    /// of the data used to train the model.
+    /// An ImageResultBasicViewModel is a simplified Image Result.
+    /// It is used as an input for the reading success prediction 
+    /// model.
     /// </summary>
-    public class ImageResultInputModel
+    public class ImageResultBasicViewModel
     {
         /// <summary>
         /// The ID of the user who took the reading.
