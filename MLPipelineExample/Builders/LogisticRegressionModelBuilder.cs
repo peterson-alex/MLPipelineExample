@@ -20,7 +20,6 @@ namespace MLPipelineExample.Builders
     {
 
         private MLContext _context; // ML context used to train and build model
-        // private IDataView _trainingData; // training data used to train model
         private OneHotEncodingEstimator _categoricalVariables; // variables that will be interpreted as categorical variables by the trainer
         private ColumnConcatenatingEstimator _featureVariables; // feature variables of the model
         private const string _featureVariablesName = "Features"; // the column name of the feature variables
