@@ -53,10 +53,10 @@ namespace MLPipelineExample.Builders
             OptimizationTolerance = 1e-8f
         };
 
-    /// <summary>
-    /// The trained model.
-    /// </summary>
-    public ITransformer TrainedModel { get; private set; }
+        /// <summary>
+        /// The trained model.
+        /// </summary>
+        public ITransformer TrainedModel { get; private set; }
         
         /// <summary>
         /// Default constructor. 
