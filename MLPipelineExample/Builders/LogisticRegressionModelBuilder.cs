@@ -223,8 +223,8 @@ namespace MLPipelineExample.Builders
             if (Directory.Exists(directory)) // save to provided directory if it exists
             {
                 // define full paths for meta data and model
-                var metaDataPath = directory + "\\modelmetadata_" + dateTimeString + ".json";
-                var modelPath = directory + "\\model_" + dateTimeString + ".zip";
+                var metaDataPath = directory + @"\\modelmetadata_" + dateTimeString + ".json";
+                var modelPath = directory + @"\\model_" + dateTimeString + ".zip";
 
                 // save meta data and model to same directory 
                 File.WriteAllText(metaDataPath, metaDataJson);
