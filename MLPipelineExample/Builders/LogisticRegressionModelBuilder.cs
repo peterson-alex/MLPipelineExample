@@ -190,7 +190,7 @@ namespace MLPipelineExample.Builders
         /// Saves the trained model as a zip file and the model 
         /// meta data + metrics to a json file.
         /// <param name="filePath"></param>
-        public void SaveModel()
+        public void SaveModel(string directory = null)
         {
 
             // get binary classification metrics model
@@ -219,11 +219,25 @@ namespace MLPipelineExample.Builders
             // example 20210605134923 -> June 05, 2021 at 13:49:23.
             var dateTimeString = dateTime.ToString(_dateTimeFormat);
 
-            // save meta data to json file 
-            File.WriteAllText("modelmetadata_" + dateTimeString + ".json", metaDataJson);
+            // save model and meta data to disk
+            if (Directory.Exists(directory)) // save to provided directory if it exists
+            {
+                // define full paths for meta data and model
+                var metaDataPath = directory + "\\modelmetadata_" + dateTimeString + ".json";
+                var modelPath = directory + "\\model_" + dateTimeString + ".zip";
 
-            // save model to zip file
-            Context.Model.Save(TrainedModel, DataSet.Schema, "model_" + dateTimeString + ".zip");
+                // save meta data and model to same directory 
+                File.WriteAllText(metaDataPath, metaDataJson);
+                Context.Model.Save(TrainedModel, DataSet.Schema, modelPath);
+            }
+            else // will save to current working directory
+            {
+                // save meta data to json file in current working directory
+                File.WriteAllText("modelmetadata_" + dateTimeString + ".json", metaDataJson);
+
+                // save model to zip file in current working directory 
+                Context.Model.Save(TrainedModel, DataSet.Schema, "model_" + dateTimeString + ".zip");
+            }
         }
 
         /// <summary>
