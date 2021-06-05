@@ -21,6 +21,11 @@ namespace MLPipelineExample.Builders
     /// </summary>
     public class LogisticRegressionModelBuilder
     {
+        /// <summary>
+        /// Date time format used to timestamp saved model and meta data files.
+        /// For example, June, 5 2021 4:12:23pm translates to "20210605162123".
+        /// </summary>
+        private const string _dateTimeFormat = "yyyyMMddHHmmss";
 
         /// <summary>
         /// ML context used for all model training, building, and evaluation.
@@ -212,7 +217,7 @@ namespace MLPipelineExample.Builders
 
             // get a formatted date time string to append to file names
             // example 20210605134923 -> June 05, 2021 at 13:49:23.
-            var dateTimeString = dateTime.ToString("yyyyMMddHHmmss");
+            var dateTimeString = dateTime.ToString(_dateTimeFormat);
 
             // save meta data to json file 
             File.WriteAllText("modelmetadata_" + dateTimeString + ".json", metaDataJson);
