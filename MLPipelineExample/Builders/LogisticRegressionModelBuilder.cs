@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.ML;
 using Microsoft.ML.Transforms;
@@ -9,6 +11,7 @@ using Microsoft.ML.Trainers;
 using MLPipelineExample.Models;
 using Microsoft.ML.Data;
 using System.Collections;
+
 
 namespace MLPipelineExample.Builders
 {
@@ -179,20 +182,37 @@ namespace MLPipelineExample.Builders
         }
 
         /// <summary>
-        /// Saves the trained model as a zip file. If no file path is 
-        /// specified, saves in working directory as 'model.zip'.
-        /// </summary>
+        /// Saves the trained model as a zip file and the model 
+        /// meta data + metrics to a json file.
         /// <param name="filePath"></param>
-        public void SaveModel(string filePath = null)
+        public void SaveModel()
         {
-            if (filePath != null)
+
+            // get binary classification metrics model
+            var metrics = GetBinaryClassificationMetricsModel(BinaryClassificationMetrics);
+
+            // get current utc timestamp
+            var dateTime = DateTime.UtcNow;
+
+            // create meta data model
+            var modelMetaData = new BinaryClassifierMetaDataModel()
             {
-                Context.Model.Save(TrainedModel, DataSet.Schema, filePath);
-            }
-            else
-            {
-                Context.Model.Save(TrainedModel, DataSet.Schema, "model.zip");
-            }
+                ModelGeneratedDateTime = dateTime,
+                Metrics = metrics,
+            };
+
+            // convert meta data to json string
+            var metaDataJson = JsonSerializer.Serialize(modelMetaData);
+
+            // get a formatted date time string to append to file names
+            // example 20210605134923 -> June 05, 2021 at 13:49:23.
+            var dateTimeString = dateTime.ToString("yyyyMMddHHmmss");
+
+            // save meta data to json file 
+            File.WriteAllText("modelmetadata_" + dateTimeString + ".json", metaDataJson);
+
+            // save model to zip file
+            Context.Model.Save(TrainedModel, DataSet.Schema, "model_" + dateTimeString + ".zip");
         }
 
         /// <summary>
