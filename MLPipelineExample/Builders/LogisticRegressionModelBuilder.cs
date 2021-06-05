@@ -57,6 +57,11 @@ namespace MLPipelineExample.Builders
         /// The trained model.
         /// </summary>
         public ITransformer TrainedModel { get; private set; }
+
+        /// <summary>
+        /// The classification metrics of the trained model.
+        /// </summary>
+        public BinaryClassificationMetrics BinaryClassificationMetrics { get; private set; }
         
         /// <summary>
         /// Default constructor. 
@@ -168,7 +173,9 @@ namespace MLPipelineExample.Builders
         public BinaryClassificationMetrics EvaluateModel()
         {
             IDataView predictions = TrainedModel.Transform(DataSet);
-            return Context.BinaryClassification.EvaluateNonCalibrated(predictions, Label);
+            var metrics = Context.BinaryClassification.EvaluateNonCalibrated(predictions, Label);
+            BinaryClassificationMetrics = metrics;
+            return metrics; 
         }
 
         /// <summary>
