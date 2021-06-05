@@ -201,8 +201,14 @@ namespace MLPipelineExample.Builders
                 Metrics = metrics,
             };
 
+            // create json serializer options
+            var options = new JsonSerializerOptions()
+            {
+                WriteIndented = true, // so json is pretty
+            };
+
             // convert meta data to json string
-            var metaDataJson = JsonSerializer.Serialize(modelMetaData);
+            var metaDataJson = JsonSerializer.Serialize(modelMetaData, options);
 
             // get a formatted date time string to append to file names
             // example 20210605134923 -> June 05, 2021 at 13:49:23.
