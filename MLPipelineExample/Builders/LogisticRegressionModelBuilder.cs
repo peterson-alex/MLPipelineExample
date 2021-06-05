@@ -209,5 +209,40 @@ namespace MLPipelineExample.Builders
 
             return null;
         }
+
+        /// <summary>
+        /// Takes a BinaryClassificationMetrics object and turns it into 
+        /// a human readable BinaryClassificationMetricsModel. 
+        /// </summary>
+        /// <param name="metrics"></param>
+        /// <returns></returns>
+        public static BinaryClassificationMetricsModel GetBinaryClassificationMetricsModel(BinaryClassificationMetrics metrics)
+        {
+            // get counts for confusion matrix
+            var counts = metrics.ConfusionMatrix.Counts;
+
+            // create human readable confusion matrix model
+            var confusionMatrixModel = new ConfusionMatrixModel()
+            {
+                TruePositiveCount = (int)counts[0][0],
+                FalseNegativeCount = (int)counts[0][1],
+                FalsePositiveCount = (int)counts[1][0],
+                TrueNegativeCount = (int)counts[1][1]
+            };
+
+            // create and return BinaryClassificationMetricsModel
+            return new BinaryClassificationMetricsModel()
+            {
+                Accuracy = metrics.Accuracy,
+                AreaUnderPrecisionRecallCurve = metrics.AreaUnderPrecisionRecallCurve,
+                AreaUnderRocCurve = metrics.AreaUnderRocCurve,
+                F1Score = metrics.F1Score,
+                PositivePrecision = metrics.PositivePrecision,
+                NegativePrecision = metrics.NegativePrecision,
+                PositiveRecall = metrics.PositiveRecall,
+                NegativeRecall = metrics.NegativeRecall,
+                ConfusionMatrix = confusionMatrixModel
+            };
+        }
     }
 }
