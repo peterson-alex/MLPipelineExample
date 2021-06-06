@@ -250,7 +250,7 @@ namespace MLPipelineExample.Builders
             // save model to zip file in current working directory 
             Context.Model.Save(TrainedModel, DataSet.Schema, modelRelativePath);
 
-            // get current working directory 
+            // return paths of model and meta data
             return new SavedModelPathModel()
             {
                 ModelPath = currentDirectory + @"\" + modelRelativePath,
