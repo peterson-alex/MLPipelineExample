@@ -190,7 +190,7 @@ namespace MLPipelineExample.Builders
         /// Saves the trained model as a zip file and the model 
         /// meta data + metrics to a json file.
         /// <param name="filePath"></param>
-        public void SaveModel(string directory = null)
+        public SavedModelPathModel SaveModel(string directory = null)
         {
 
             // get binary classification metrics model
@@ -223,21 +223,39 @@ namespace MLPipelineExample.Builders
             if (Directory.Exists(directory)) // save to provided directory if it exists
             {
                 // define full paths for meta data and model
-                var metaDataPath = directory + @"\\modelmetadata_" + dateTimeString + ".json";
-                var modelPath = directory + @"\\model_" + dateTimeString + ".zip";
+                var metaDataPath = directory + @"\modelmetadata_" + dateTimeString + ".json";
+                var modelPath = directory + @"\model_" + dateTimeString + ".zip";
 
                 // save meta data and model to same directory 
                 File.WriteAllText(metaDataPath, metaDataJson);
                 Context.Model.Save(TrainedModel, DataSet.Schema, modelPath);
-            }
-            else // will save to current working directory
-            {
-                // save meta data to json file in current working directory
-                File.WriteAllText("modelmetadata_" + dateTimeString + ".json", metaDataJson);
 
-                // save model to zip file in current working directory 
-                Context.Model.Save(TrainedModel, DataSet.Schema, "model_" + dateTimeString + ".zip");
+                return new SavedModelPathModel()
+                {
+                    ModelPath = modelPath,
+                    MetaDataPath = metaDataPath
+                };
             }
+
+            // get current working directory 
+            var currentDirectory = Directory.GetCurrentDirectory();
+
+            // define model and meta data relative paths
+            var metaDataRelativePath = "modelmetadata_" + dateTimeString + ".json";
+            var modelRelativePath = "model_" + dateTimeString + ".zip";
+            
+            // save meta data to json file in current working directory
+            File.WriteAllText(metaDataRelativePath, metaDataJson);
+
+            // save model to zip file in current working directory 
+            Context.Model.Save(TrainedModel, DataSet.Schema, modelRelativePath);
+
+            // get current working directory 
+            return new SavedModelPathModel()
+            {
+                ModelPath = currentDirectory + @"\" + modelRelativePath,
+                MetaDataPath = currentDirectory + @"\" + metaDataRelativePath
+            };
         }
 
         /// <summary>
