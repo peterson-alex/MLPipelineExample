@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MLPipelineExample\Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MLPipelineExample\MLPipelineExample.csproj" />
   </ItemGroup>
 
