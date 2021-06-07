@@ -8,4 +8,10 @@
     <PackageReference Include="Microsoft.ML" Version="1.5.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="model_latest.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
