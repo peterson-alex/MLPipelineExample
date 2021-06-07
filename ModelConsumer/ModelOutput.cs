@@ -17,6 +17,6 @@ namespace ModelConsumer
         /// <summary>
         /// The f1 score associated with this prediction.
         /// </summary>
-        public float[] Score { get; set; }
+        public float Score { get; set; }
     }
 }
