@@ -16,8 +16,4 @@
     <ProjectReference Include="..\MLPipelineExample\MLPipelineExample.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MLPipelineExample\Builders\" />
-  </ItemGroup>
-
 </Project>
